@@ -9,12 +9,14 @@ import android.Manifest;
 import android.util.Log;
 import android.view.WindowManager;
 import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -107,6 +109,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
+
+        ImageButton geofencesButton = findViewById(R.id.geofences_button);
+        geofencesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click on the Geofences ImageButton
+                Intent intent = new Intent(MainActivity.this, GeofencingActivity.class);
+                startActivity(intent);
+            }
+        });
 
         handler = new Handler(Looper.getMainLooper());
         handler.post(periodicRequest);

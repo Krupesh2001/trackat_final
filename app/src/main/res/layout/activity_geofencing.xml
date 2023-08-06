@@ -1,46 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:padding="16dp">
-
-<Button
-    android:id="@+id/back_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:text="Back" />
-
-<Button
-    android:id="@+id/create_geofence_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/back_button"
-    android:layout_marginTop="16dp"
-    android:text="Create Geofence" />
-
-<!-- Add the EditText field for the user to input their home address -->
-<EditText
-    android:id="@+id/address_edit_text"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/create_geofence_button"
-    android:layout_marginTop="16dp"
-    android:hint="Enter Home Address" />
-
-<!-- Add a button to submit the home address -->
-<Button
-    android:id="@+id/submit_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/address_edit_text"
-    android:layout_marginTop="16dp"
-    android:text="Submit" />
-
-<com.google.android.gms.maps.MapView
-    android:id="@+id/geofence_map"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/submit_button" />
+    tools:context=".GeofencingActivity">
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/map_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/geosheet"
+        android:layout_width="340dp"
+        android:layout_height="300dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:layout_gravity="center_horizontal"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        android:layout_marginBottom="-20dp">
+
+        <LinearLayout
+            android:id="@+id/geosheet_box"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_remove_24"
+                android:layout_gravity="center|top" />
+
+            <!-- Geofence List Dropdown -->
+            <Spinner
+                android:id="@+id/geofence_list_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:entries="@array/geofence_list"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lineColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3">
+
+                <!-- Your ListView for displaying the geofences -->
+                <ListView
+                    android:id="@+id/geofence_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lineColor" />
+
+            <LinearLayout
+                android:id="@+id/menu_box"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_anchor="@id/sheet_box"
+                android:layout_gravity="center|bottom"
+                android:layout_weight="1">
+
+                <!-- "Location" Option -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/geolocation_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/baseline_location_on_24"
+                        android:contentDescription="Location" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Location"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <!-- "Create" Option -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/create_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/baseline_add_24"
+                        android:contentDescription="Create" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Create"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <!-- "Delete" Option -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/delete_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/baseline_add_24"
+                        android:contentDescription="Delete" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delete"
+                        android:textSize="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
